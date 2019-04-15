@@ -49,6 +49,7 @@ class Controller extends BaseController
                 }
 
                 $conv = $agent->getActionConversation();
+                $conv->ask('Please choose below');
                 $carousel = Carousel::create();
                 foreach ($results->hotels as $key => $hotel)
                 {
@@ -67,8 +68,10 @@ class Controller extends BaseController
                             ->image($hotel['thumbnail'])
                     );
                 }
+                $conv->ask($carousel);
             }
 
+            $agent->reply($conv);
             return response()->json($agent->render());
         }
     }
