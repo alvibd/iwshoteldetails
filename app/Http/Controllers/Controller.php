@@ -32,9 +32,24 @@ class Controller extends BaseController
 
             }
 
-            $hotels = $service->getHotels(Carbon::today()->format('DD-MM-YY'), Carbon::tomorrow()->format('DD-MM-YY'), 1, 1, $locationId, 1);
+            $results = $service->getHotels(Carbon::today()->format('DD-MM-YY'), Carbon::tomorrow()->format('DD-MM-YY'), 1, 1, $locationId, 1);
 
+            $amneties = [];
 
+            if (!isEmpty($results))
+            {
+                foreach ($results->facets->features_models as $amnety)
+                {
+                    $amneties[] = [
+                        'name' => $amnety->name,
+                        'id' => $amnety->id
+                    ];
+                }
+
+                foreach ($results->hotels as $hotel)
+                {
+                }
+            }
         }
     }
 }
