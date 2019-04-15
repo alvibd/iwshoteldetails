@@ -19,7 +19,7 @@ class AmarRoomService
 
     public function getLocation($location)
     {
-        $result = $this->client->request('GET', $this->base_url.'search?q='.$location, ['verify' => 'C:\wamp64\bin\php\php7.2.14\cacert.pem']);
+        $result = $this->client->request('GET', $this->base_url.'search?q='.$location, ['verify' => env('SSL_CERT')]);
 
 //        dump($result->getBody()->getContents());
         if ($result->getStatusCode() != 200)
@@ -56,7 +56,7 @@ class AmarRoomService
     public function getHotelInfo($hotelId, $checkin, $checkout, $adults = 1, $rooms = 1)
     {
         $options = [
-            'verify' => 'C:\wamp64\bin\php\php7.2.14\cacert.pem',
+            'verify' => env('SSL_CERT'),
             'query' => [
                 'checkin' => $checkin,
                 'checkout' => $checkout,
