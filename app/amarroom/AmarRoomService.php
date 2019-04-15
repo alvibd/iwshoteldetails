@@ -33,7 +33,7 @@ class AmarRoomService
     public function getHotels($checkin, $checkout, $adults = 1, $rooms = 1, $location, $page = 1)
     {
         $options = [
-            'verify' => 'C:\wamp64\bin\php\php7.2.14\cacert.pem',
+            'verify' => env('SSL_CERT'),
             'query' => [
                 'checkin' => $checkin,
                 'checkout' => $checkout,
