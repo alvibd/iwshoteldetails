@@ -41,15 +41,32 @@ class Controller extends BaseController
                 foreach ($results->facets->features_models as $amnety)
                 {
                     $amneties[] = [
-                        'name' => $amnety->name,
-                        'id' => $amnety->id
+                        $amnety->id => $amnety->name,
                     ];
                 }
 
-                foreach ($results->hotels as $hotel)
+                $conv = $agent->getActionConversation();
+                $carousel = Carousel::create();
+                foreach ($results->hotels as $key => $hotel)
                 {
+                    $carousel->Option(
+                        Option::create()
+                            ->key('OPTION_'.$key)
+                            ->title($hotel['name'])
+                            ->description(function ($hotel) use ($amneties){
+                                $description = '';
+                                foreach ($hotel['amenities'] as $amenity)
+                                {
+                                    $description .= $amenity[$amenity];
+                                }
+                                return $description;
+                            })
+                            ->image($hotel['thumbnail'])
+                    );
                 }
             }
+
+            return response()->json($agent->render());
         }
     }
 }

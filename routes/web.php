@@ -18,3 +18,5 @@ $router->get('/', function () use ($router) {
 $router->get('/location', 'DataController@getLocation');
 $router->get('/hotels', 'DataController@getHotels');
 $router->get('/hotel_info/{hotelId}', 'DataController@getHotelInfo');
+
+$router->post('/webhook', 'Controller@webHook');
