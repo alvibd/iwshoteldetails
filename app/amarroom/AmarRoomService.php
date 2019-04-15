@@ -27,7 +27,7 @@ class AmarRoomService
             abort(500);
         }
         else
-            return [json_decode($result->getBody()->getContents())];
+            return json_decode($result->getBody()->getContents());
     }
 
     public function getHotels($checkin, $checkout, $adults = 1, $rooms = 1, $location, $page = 1)
@@ -39,7 +39,7 @@ class AmarRoomService
                 'checkout' => $checkout,
                 'adults' => $adults,
                 'rooms' => $rooms,
-                'location' => $location,
+                'location' => urlencode($location),
                 'page' => $page
             ]
         ];
@@ -50,7 +50,7 @@ class AmarRoomService
             abort(500);
         }
         else
-            return [json_decode($result->getBody()->getContents())];
+            return json_decode($result->getBody()->getContents());
     }
 
     public function getHotelInfo($hotelId, $checkin, $checkout, $adults = 1, $rooms = 1)
@@ -71,6 +71,6 @@ class AmarRoomService
             abort(500);
         }
         else
-            return [json_decode($result->getBody()->getContents())];
+            return json_decode($result->getBody()->getContents());
     }
 }
