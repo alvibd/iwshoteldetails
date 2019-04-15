@@ -19,6 +19,8 @@ class Controller extends BaseController
     public function webHook(Request $request, AmarRoomService $service)
     {
         $agent = WebhookClient::fromData($request->json()->all());
+        $agent->reply('Hi, how can I help?');
+        return response()->json($agent->render());
 
         if ($agent->getIntent() == 'Hotels in') {
             $params = $agent->getParameters();
