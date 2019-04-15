@@ -13,6 +13,8 @@ class Controller extends BaseController
     /**
      * @param Request $request
      * @param AmarRoomService $service
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function webHook(Request $request, AmarRoomService $service)
     {
@@ -42,15 +44,35 @@ class Controller extends BaseController
                 foreach ($results->facets->features_models as $amnety)
                 {
                     $amneties[] = [
-                        'name' => $amnety->name,
-                        'id'   => $amnety->id
+                        $amnety->id => $amnety->name,
                     ];
                 }
 
-                foreach ($results->hotels as $hotel)
+                $conv = $agent->getActionConversation();
+                $conv->ask('Please choose below');
+                $carousel = Carousel::create();
+                foreach ($results->hotels as $key => $hotel)
                 {
+                    $carousel->Option(
+                        Option::create()
+                            ->key('OPTION_'.$key)
+                            ->title($hotel['name'])
+                            ->description(function ($hotel) use ($amneties){
+                                $description = '';
+                                foreach ($hotel['amenities'] as $amenity)
+                                {
+                                    $description .= $amenity[$amenity];
+                                }
+                                return $description;
+                            })
+                            ->image($hotel['thumbnail'])
+                    );
                 }
+                $conv->ask($carousel);
             }
+
+            $agent->reply($conv);
+            return response()->json($agent->render());
         }
     }
 }
